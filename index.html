@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Address Book</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="appBody">
+        <div class="contacts">
+            <div class="Title">List of contacts</div>
+            <div class="list">
+                <ul>
+                    <li>
+                        
+                    </li>
+                </ul>
+            </div>
+            <button class="btn" id="add">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+            <button>
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+        <div class="informations">
+            <form action="" class="register">
+                <select>
+                    <option value="Choice" selected disabled hidden>Please select an option</option>
+                    <option value="Male"> Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Autre">Autre</option>
+                </select>
+                <label>Surname</label>
+                <input type="text" name="Surname" id="Surname" required>
+                <label>First Name</label>
+                <input type="text" name="firstName" id="firstName" required>
+                <label>Phone Number</label>
+                <input type="tel" name="Number" id="Number" required>
+                <input type="button" name="submitButton" id="submitButton" value="Register">
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

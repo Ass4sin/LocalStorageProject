@@ -7,25 +7,25 @@ $("#add").on("click",function(){
 });
 
 $("#submitButton").on("click", function() {
-    const surname = document.querySelector("#Surname").value;
-    const firstName = document.querySelector("#firstName").value;
-    const phoneNumber = document.querySelector("#Number").value;
-    
-    const register = {
+    const surname  = document.querySelector("#Surname").value
+    const firstName = document.querySelector("#firstName").value
+    const phoneNumber = document.querySelector("#Number").value
+
+    let register = {
         surname: surname,
         firstName: firstName,
         phoneNumber: phoneNumber
-    };
-
-    let information = window.localStorage.getItem("Informations");
-    console.log(information);
-    let arr = [];
-    if (information !== null) {
-        arr = JSON.parse(information);
     }
 
-    arr.push(register);
+    let arr = []
 
-    window.localStorage.setItem("Informations", JSON.stringify(arr));
+    information = localStorage.getItem("Information")
 
+    if (information !== null) {
+        arr = JSON.parse(information)
+    }
+
+    arr.push(register)
+    
+    localStorage.setItem("Information", JSON.stringify(arr))
 });

@@ -1,18 +1,19 @@
 const ul = document.querySelector("ul")
-
+const select = document.querySelector("#gender")
+let isEditing = -10
 
 $("#add").on("click", function () {
-    if ($(".informations").css("display") == "none") {
-        $(".informations").show("slow");
-    } else {
-        $(".informations").hide("slow");
-    }
+    $(".informations").toggle("slow");
 });
 
+$(".input").on("click", function (event) {
+    event.target.value = ""
+});
 
 $("#erase").on("click", function () {
-    localStorage.clear()
-})
+    localStorage.clear();
+    ul.innerHTML = ""; // Clear the displayed list
+});
 
 $("#submitButton").on("click", function () {
     const surname = document.querySelector("#Surname").value
@@ -25,57 +26,72 @@ $("#submitButton").on("click", function () {
         phoneNumber: phoneNumber
     }
 
-    let arr = []
-    // let namesArr = []
-    // information = localStorage.getItem("Information")
-    // names = localStorage.getItem("Names")
+    if (register.surname === "" || register.firstName === "" || register.phoneNumber === "") {
+        alert("You must fill in the blanks")
+        return
+    }
 
-    if (localStorage.length === 0) {
-        arr.push(register)
-        localStorage.setItem("Information", JSON.stringify(arr))
-    } else if (localStorage.length !== 0) {
+    let arr = JSON.parse(localStorage.getItem("Information")) || []
+
+    if (isEditing !== -10) {
+        // Edit existing item
+        arr[isEditing] = register
+        isEditing = -10
+    } else {
+        // Add new item
         if (checkInformations(register)) {
             console.log("same informations");
         } else {
-            information = localStorage.getItem("Information")
-            arr = JSON.parse(information)
             arr.push(register)
-            localStorage.setItem("Information", JSON.stringify(arr))
         }
     }
 
+    localStorage.setItem("Information", JSON.stringify(arr))
+
+    document.querySelector("#Surname").value = ""
+    document.querySelector("#firstName").value = ""
+    document.querySelector("#Number").value = ""
+
+    showNames()
 });
 
+function modifyUser(index) {
+    isEditing = index
+    const getLocalStorage = JSON.parse(localStorage.getItem("Information"))
+    document.querySelector("#Surname").value = getLocalStorage[index].surname
+    document.querySelector("#firstName").value = getLocalStorage[index].firstName
+    document.querySelector("#Number").value = getLocalStorage[index].phoneNumber
+}
 
-function showNames() {
-    const surname = document.querySelector("#Surname").value
-    const firstName = document.querySelector("#firstName").value
-    const phoneNumber = document.querySelector("#Number").value
-    if (localStorage.length === 0){
-        return
-    }
-    getLocalStorage = JSON.parse(localStorage.getItem("Information"))
-    len = getLocalStorage.length
-    for(let i = 0; i < len; i++){
-        names = ul.appendChild(document.createElement("li"))
-        names.innerHTML += getLocalStorage[i].surname
+function showNames(deleteUser = null) {
+    ul.innerHTML = ""
+    const getLocalStorage = JSON.parse(localStorage.getItem("Information")) || []
+    getLocalStorage.forEach((item, index) => {
+        const newList = document.createElement("li")
+        newList.setAttribute("id", `listItem_${index}`)
+        newList.setAttribute("onclick", `modifyUser(${index})`)
+        newList.classList.add("contactList")
+        newList.innerHTML = `${item.surname} ${item.firstName} ${item.phoneNumber} <i class="fa-solid fa-trash" onclick="deleteUser(${index})"></i>`
+        ul.appendChild(newList)
+    })
+}
+
+function deleteUser(index) {
+    let getLocalStorage = JSON.parse(localStorage.getItem("Information"))
+    if (Array.isArray(getLocalStorage)) {
+        getLocalStorage.splice(index, 1)
+        localStorage.setItem("Information", JSON.stringify(getLocalStorage))
+        showNames()
     }
 }
 
 function checkInformations(data) {
-    if (localStorage.length !== 0) {
-        getLocalStorage = JSON.parse(localStorage.getItem("Information"))
-        localStorageLength = getLocalStorage.length
-
-        for (let i = 0; i < localStorageLength; i++) {
-            if (getLocalStorage[i].surname === data.surname && getLocalStorage[i].firstName === data.firstName && getLocalStorage[i].phoneNumber === data.phoneNumber) {
-                return true
-            }
-        }
-    } else {
-        return false
-    }
-
+    const getLocalStorage = JSON.parse(localStorage.getItem("Information")) || []
+    return getLocalStorage.some(item => 
+        item.surname === data.surname && 
+        item.firstName === data.firstName && 
+        item.phoneNumber === data.phoneNumber
+    )
 }
 
 showNames()

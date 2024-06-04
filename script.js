@@ -1,21 +1,21 @@
 const ul = document.querySelector("ul")
 
 
-$("#add").on("click",function(){
+$("#add").on("click", function () {
     if ($(".informations").css("display") == "none") {
         $(".informations").show("slow");
-    }else{
+    } else {
         $(".informations").hide("slow");
     }
 });
 
 
-$("#erase").on("click", function(){
+$("#erase").on("click", function () {
     localStorage.clear()
 })
 
-$("#submitButton").on("click", function() {
-    const surname  = document.querySelector("#Surname").value
+$("#submitButton").on("click", function () {
+    const surname = document.querySelector("#Surname").value
     const firstName = document.querySelector("#firstName").value
     const phoneNumber = document.querySelector("#Number").value
 
@@ -27,43 +27,55 @@ $("#submitButton").on("click", function() {
 
     let arr = []
     // let namesArr = []
-    information = localStorage.getItem("Information")
+    // information = localStorage.getItem("Information")
     // names = localStorage.getItem("Names")
 
-    if (information !== null) {
-        arr = JSON.parse(information)
-        // namesArr = JSON.parse(names)
+    if (localStorage.length === 0) {
+        arr.push(register)
+        localStorage.setItem("Information", JSON.stringify(arr))
+    } else if (localStorage.length !== 0) {
+        if (checkInformations(register)) {
+            console.log("same informations");
+        } else {
+            information = localStorage.getItem("Information")
+            arr = JSON.parse(information)
+            arr.push(register)
+            localStorage.setItem("Information", JSON.stringify(arr))
+        }
     }
-    
-    
-    
-    
-    arr.push(register)
-    // namesArr.push(surname, firstName)
-    
-    
-    ul.appendChild(document.createElement("li")).textContent = surname + " " + firstName; //need to be able to stock this new list in the local storage
-    
-    localStorage.setItem("Information", JSON.stringify(arr))
-    // localStorage.setItem("Names", JSON.stringify(namesArr))
-    checkInformations(register)
+
 });
 
 
+function showNames() {
+    const surname = document.querySelector("#Surname").value
+    const firstName = document.querySelector("#firstName").value
+    const phoneNumber = document.querySelector("#Number").value
+    if (localStorage.length === 0){
+        return
+    }
+    getLocalStorage = JSON.parse(localStorage.getItem("Information"))
+    len = getLocalStorage.length
+    for(let i = 0; i < len; i++){
+        names = ul.appendChild(document.createElement("li"))
+        names.innerHTML += getLocalStorage[i].surname
+    }
+}
+
 function checkInformations(data) {
-    console.log(localStorage.length);
-    if(localStorage.length !== 0){
+    if (localStorage.length !== 0) {
         getLocalStorage = JSON.parse(localStorage.getItem("Information"))
         localStorageLength = getLocalStorage.length
 
-        for(let i = 0; i < localStorageLength; i++){
+        for (let i = 0; i < localStorageLength; i++) {
             if (getLocalStorage[i].surname === data.surname && getLocalStorage[i].firstName === data.firstName && getLocalStorage[i].phoneNumber === data.phoneNumber) {
-                //working if, not to figure out how to not add the data
-                localStorage.removeItem("Information", data)
+                return true
             }
         }
-    } else{
-        console.log("empty local storage for now");
+    } else {
+        return false
     }
-    
+
 }
+
+showNames()

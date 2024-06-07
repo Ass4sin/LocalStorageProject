@@ -18,7 +18,6 @@ $("#erase").on("click", function () {
 })
 
 $("#submitButton").on("click", function () {
-    // debugger
     const surname = document.querySelector("#Surname").value
     const firstName = document.querySelector("#firstName").value
     const phoneNumber = document.querySelector("#Number").value
@@ -94,7 +93,6 @@ function showNames(deleteUser) {
 }
 
 function deleteUser(user) {
-    // debugger
     getLocalStorage = JSON.parse(localStorage.getItem("Information"))
     if (Array.isArray(getLocalStorage)) {
         getLocalStorage.splice(user, 1)
@@ -119,3 +117,5 @@ function checkInformations(data) {
     }
 
 }
+
+showNames()

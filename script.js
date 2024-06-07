@@ -37,7 +37,7 @@ $("#submitButton").on("click", function () {
     }
 
     let arr = JSON.parse(localStorage.getItem("Information")) || []
-    
+
     if (isEditing !== -10) {
         // Edit existing item
         arr[isEditing] = register
@@ -71,6 +71,7 @@ function modifyUser(index) {
 function showNames(deleteUser = null) {
     ul.innerHTML = ""
     const getLocalStorage = JSON.parse(localStorage.getItem("Information")) || []
+    getLocalStorage.sort((a, b) => a.surname.localeCompare(b.surname))
     getLocalStorage.forEach((item, index) => {
         const newList = document.createElement("li")
         newList.setAttribute("id", `listItem_${index}`)
@@ -82,7 +83,7 @@ function showNames(deleteUser = null) {
 }
 
 function openForm() {
-    if($(".informations").css("display", "none")){
+    if ($(".informations").css("display") === "none") {
         $(".informations").show("slow")
     }
 }

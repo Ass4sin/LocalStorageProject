@@ -19,7 +19,9 @@ body{
     width: 500px;
     justify-content: space-between;
     padding-left: 10px;
+    cursor: pointer;
 }
+
 
 i{
     cursor: pointer;

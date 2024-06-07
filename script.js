@@ -19,14 +19,17 @@ $("#submitButton").on("click", function () {
     const surname = document.querySelector("#Surname").value
     const firstName = document.querySelector("#firstName").value
     const phoneNumber = document.querySelector("#Number").value
+    const gender = $("#gender").val()
+    console.log(gender);
 
     let register = {
         surname: surname,
         firstName: firstName,
-        phoneNumber: phoneNumber
+        phoneNumber: phoneNumber,
+        gender: gender
     }
 
-    if (register.surname === "" || register.firstName === "" || register.phoneNumber === "") {
+    if (register.surname === "" || register.firstName === "" || register.phoneNumber === "" || register.gender === null) {
         alert("You must fill in the blanks")
         return
     }
@@ -69,11 +72,18 @@ function showNames(deleteUser = null) {
     getLocalStorage.forEach((item, index) => {
         const newList = document.createElement("li")
         newList.setAttribute("id", `listItem_${index}`)
-        newList.setAttribute("onclick", `modifyUser(${index})`)
+        newList.setAttribute("onclick", `modifyUser(${index});openForm()`)
+        // newList.setAttribute("onclick", "openForm()")
         newList.classList.add("contactList")
-        newList.innerHTML = `${item.surname} ${item.firstName} ${item.phoneNumber} <i class="fa-solid fa-trash" onclick="deleteUser(${index})"></i>`
+        newList.innerHTML = `${item.surname} ${item.firstName} <i class="fa-solid fa-trash" onclick="deleteUser(${index})"></i>`
         ul.appendChild(newList)
     })
+}
+
+function openForm() {
+    if($(".informations").css("display", "none")){
+        $(".informations").show("slow")
+    }
 }
 
 function deleteUser(index) {

@@ -29,13 +29,15 @@ $("#submitButton").on("click", function () {
         gender: gender
     }
 
+    let namesArr = []
+
     if (register.surname === "" || register.firstName === "" || register.phoneNumber === "" || register.gender === null) {
-        alert("You must fill in the blanks")
+        alert("You must fill in all of the informations")
         return
     }
 
     let arr = JSON.parse(localStorage.getItem("Information")) || []
-
+    
     if (isEditing !== -10) {
         // Edit existing item
         arr[isEditing] = register
@@ -73,7 +75,6 @@ function showNames(deleteUser = null) {
         const newList = document.createElement("li")
         newList.setAttribute("id", `listItem_${index}`)
         newList.setAttribute("onclick", `modifyUser(${index});openForm()`)
-        // newList.setAttribute("onclick", "openForm()")
         newList.classList.add("contactList")
         newList.innerHTML = `${item.surname} ${item.firstName} <i class="fa-solid fa-trash" onclick="deleteUser(${index})"></i>`
         ul.appendChild(newList)

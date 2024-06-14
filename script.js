@@ -1,13 +1,13 @@
-const ul = document.querySelector("ul")
-const select = document.querySelector("#gender")
-let isEditing = -10
+const ul = document.querySelector("ul");
+const select = document.querySelector("#gender");
+let isEditing = -10;
 
 $("#add").on("click", function () {
     $(".informations").toggle("slow");
 });
 
 $(".input").on("click", function (event) {
-    event.target.value = ""
+    event.target.value = "";
 });
 
 $("#erase").on("click", function () {
@@ -16,10 +16,10 @@ $("#erase").on("click", function () {
 });
 
 $("#submitButton").on("click", function () {
-    const surname = document.querySelector("#Surname").value
-    const firstName = document.querySelector("#firstName").value
-    const phoneNumber = document.querySelector("#Number").value
-    const gender = $("#gender").val()
+    const surname = document.querySelector("#Surname").value;
+    const firstName = document.querySelector("#firstName").value;
+    const phoneNumber = document.querySelector("#Number").value;
+    const gender = $("#gender").val();
     console.log(gender);
 
     let register = {
@@ -27,81 +27,81 @@ $("#submitButton").on("click", function () {
         firstName: firstName,
         phoneNumber: phoneNumber,
         gender: gender
-    }
-
-    let namesArr = []
+    };
 
     if (register.surname === "" || register.firstName === "" || register.phoneNumber === "" || register.gender === null) {
-        alert("You must fill in all of the informations")
-        return
+        alert("You must fill in all of the informations");
+        return;
     }
 
-    let arr = JSON.parse(localStorage.getItem("Information")) || []
+    let arr = JSON.parse(localStorage.getItem("Information")) || [];
 
     if (isEditing !== -10) {
-        arr[isEditing] = register
-        isEditing = -10
+        arr[isEditing] = register;
+        isEditing = -10;
     } else {
         if (checkInformations(register)) {
             console.log("same informations");
         } else {
-            arr.push(register)
+            arr.push(register);
         }
     }
 
-    localStorage.setItem("Information", JSON.stringify(arr))
+    arr.sort((a, b) => a.surname.localeCompare(b.surname));
 
-    document.querySelector("#Surname").value = ""
-    document.querySelector("#firstName").value = ""
-    document.querySelector("#Number").value = ""
+    localStorage.setItem("Information", JSON.stringify(arr));
 
-    showNames()
+    document.querySelector("#Surname").value = "";
+    document.querySelector("#firstName").value = "";
+    document.querySelector("#Number").value = "";
+
+    showNames();
 });
 
 function modifyUser(index) {
-    isEditing = index
-    const getLocalStorage = JSON.parse(localStorage.getItem("Information"))
-    document.querySelector("#Surname").value = getLocalStorage[index].surname
-    document.querySelector("#firstName").value = getLocalStorage[index].firstName
-    document.querySelector("#Number").value = getLocalStorage[index].phoneNumber
+    isEditing = index;
+    const getLocalStorage = JSON.parse(localStorage.getItem("Information"));
+    document.querySelector("#Surname").value = getLocalStorage[index].surname;
+    document.querySelector("#firstName").value = getLocalStorage[index].firstName;
+    document.querySelector("#Number").value = getLocalStorage[index].phoneNumber;
 }
 
-function showNames(deleteUser = null) {
-    ul.innerHTML = ""
-    const getLocalStorage = JSON.parse(localStorage.getItem("Information")) || []
-    getLocalStorage.sort((a, b) => a.surname.localeCompare(b.surname))
+function showNames() {
+    ul.innerHTML = "";
+    const getLocalStorage = JSON.parse(localStorage.getItem("Information")) || [];
+    getLocalStorage.sort((a, b) => a.surname.localeCompare(b.surname));
     getLocalStorage.forEach((item, index) => {
-        const newList = document.createElement("li")
-        newList.setAttribute("id", `listItem_${index}`)
-        newList.setAttribute("onclick", `modifyUser(${index});openForm()`)
-        newList.classList.add("contactList")
-        newList.innerHTML = `${item.surname} ${item.firstName} <i class="fa-solid fa-trash" onclick="deleteUser(${index})"></i>`
-        ul.appendChild(newList)
-    })
+        const newList = document.createElement("li");
+        newList.setAttribute("id", `listItem_${index}`);
+        newList.setAttribute("onclick", `modifyUser(${index});openForm()`);
+        newList.classList.add("contactList");
+        newList.innerHTML = `${item.surname} ${item.firstName} <i class="fa-solid fa-trash" onclick="deleteUser(${index})"></i>`;
+        ul.appendChild(newList);
+    });
 }
 
 function openForm() {
     if ($(".informations").css("display") === "none") {
-        $(".informations").show("slow")
+        $(".informations").show("slow");
     }
 }
 
 function deleteUser(index) {
-    let getLocalStorage = JSON.parse(localStorage.getItem("Information"))
+    let getLocalStorage = JSON.parse(localStorage.getItem("Information"));
     if (Array.isArray(getLocalStorage)) {
-        getLocalStorage.splice(index, 1)
-        localStorage.setItem("Information", JSON.stringify(getLocalStorage))
-        showNames()
+        getLocalStorage.splice(index, 1);
+        localStorage.setItem("Information", JSON.stringify(getLocalStorage));
+        showNames();
     }
 }
 
 function checkInformations(data) {
-    const getLocalStorage = JSON.parse(localStorage.getItem("Information")) || []
+    const getLocalStorage = JSON.parse(localStorage.getItem("Information")) || [];
     return getLocalStorage.some(item => 
         item.surname === data.surname && 
         item.firstName === data.firstName && 
         item.phoneNumber === data.phoneNumber
-    )
+    );
 }
 
-showNames()
+showNames();

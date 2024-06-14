@@ -12,7 +12,7 @@ $(".input").on("click", function (event) {
 
 $("#erase").on("click", function () {
     localStorage.clear();
-    ul.innerHTML = ""; // Clear the displayed list
+    ul.innerHTML = "";
 });
 
 $("#submitButton").on("click", function () {
@@ -37,11 +37,9 @@ $("#submitButton").on("click", function () {
     let arr = JSON.parse(localStorage.getItem("Information")) || []
 
     if (isEditing !== -10) {
-        // Edit existing item
         arr[isEditing] = register
         isEditing = -10
     } else {
-        // Add new item
         if (checkInformations(register)) {
             console.log("same informations");
         } else {

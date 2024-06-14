@@ -29,8 +29,10 @@ $("#submitButton").on("click", function () {
         gender: gender
     }
 
+    let namesArr = []
+
     if (register.surname === "" || register.firstName === "" || register.phoneNumber === "" || register.gender === null) {
-        alert("You must fill in the blanks")
+        alert("You must fill in all of the informations")
         return
     }
 
@@ -67,11 +69,11 @@ function modifyUser(index) {
 function showNames(deleteUser = null) {
     ul.innerHTML = ""
     const getLocalStorage = JSON.parse(localStorage.getItem("Information")) || []
+    getLocalStorage.sort((a, b) => a.surname.localeCompare(b.surname))
     getLocalStorage.forEach((item, index) => {
         const newList = document.createElement("li")
         newList.setAttribute("id", `listItem_${index}`)
         newList.setAttribute("onclick", `modifyUser(${index});openForm()`)
-        // newList.setAttribute("onclick", "openForm()")
         newList.classList.add("contactList")
         newList.innerHTML = `${item.surname} ${item.firstName} <i class="fa-solid fa-trash" onclick="deleteUser(${index})"></i>`
         ul.appendChild(newList)
@@ -79,7 +81,7 @@ function showNames(deleteUser = null) {
 }
 
 function openForm() {
-    if($(".informations").css("display", "none")){
+    if ($(".informations").css("display") === "none") {
         $(".informations").show("slow")
     }
 }
